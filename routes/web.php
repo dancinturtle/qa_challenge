@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/questions', 'QuestionController@index')->name('questions.index');
+
+Route::get('/questions/create', 'QuestionController@create')->name('questions.create');
+
+Route::get('/questions/{question}/answers', 'QuestionController@show')->name('questions.show');
