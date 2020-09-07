@@ -15,7 +15,7 @@
       @foreach ($questions as $question)
       <tr>
         <th scope="row">{{date('F j, Y', strtotime($question->created_at))}}</th>
-        <td><a href="{{route('questions.show', $question)}}">{{$question->question}}</a></td>
+        <td><a href="{{route('questions.show', $question)}}" class="text-light">{{$question->question}}</a></td>
         <td>{{$question->answers_count}}</td>
       </tr>
       @endforeach
