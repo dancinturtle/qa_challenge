@@ -21,7 +21,25 @@ class QuestionController extends Controller
   }
 
   public function create() {
-    return view('questions.createQuestion');
+    $placeholders = array(
+      "How can anyone milk an almond?",
+      "If vegans love plants so much, why do you eat them?",
+      "Won't cows go extinct if we don't breed them?",
+      "Isn't soy the worst for our environment?",
+      "Have you been to my uncle's farm?",
+      "Where do you get your protein?",
+      "But bacon.... ?",
+      "How could I possibly live without cheese?",
+      "Why are you so extreme?",
+      "Is Beyond meat healthier than beef?",
+      "Is honey vegan?",
+      "Can vegans still wear leather?",
+      "Are oysters vegan?",
+      "B12, checkmate, amirite?"
+    );
+    $random = array_rand($placeholders);
+    $placeholder = $placeholders[$random];
+    return view('questions.createQuestion', compact('placeholder'));
   }
 
   public function show(Question $question) {
