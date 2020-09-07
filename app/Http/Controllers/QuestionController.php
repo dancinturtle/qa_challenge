@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Question;
+use App\Answer;
 
 class QuestionController extends Controller
 {
@@ -28,6 +29,14 @@ class QuestionController extends Controller
     return $placeholders[$random];
   }
 
+  public function validateAnswer() {
+    $question = Question::findOrFail(request('question_id'));
+    return request()->validate([
+        'answer' => ['required', 'min:5'],
+        'question_id' => ['required']
+    ]);
+}
+
   protected function validateQuestion() {
     return request()->validate([
       'question' => ['required', 'min:5', 'regex:/^.*\?$/']],
@@ -35,11 +44,13 @@ class QuestionController extends Controller
     );
   }
 
-  public function index() {
+  public function index(Request $request) {
     // fetch questions and how many answers they each have
     $questionCollection = Question::withCount(['answers'])->get();
     $questions = $questionCollection->sortByDesc('created_at');
-    return view('questions.index', compact('questions'));
+    // fetch any flash data from successful question creation
+    $flash = $request->session()->get('status');
+    return view('questions.index', compact('questions', 'flash'));
   }
 
   public function create() {
@@ -47,16 +58,27 @@ class QuestionController extends Controller
     return view('questions.createQuestion', compact('placeholder'));
   }
 
-  public function show(Question $question) {
+  public function show(Request $request, Question $question) {
     $answers = $question->answers->sortBy('created_at');
-    $labelText = count($answers) > 0 ? "Don't like these answers? Post your own!" : "No answers have been posted yet, be the first!";
-    return view ('questions.answers', compact('question', 'answers', 'labelText'));
+    $labelText = count($answers) > 0 ? "The submitted answers are shown below. If you don't like them, post your own!" : "No answers have been posted yet, be the first!";
+    // fetch any flash data from successful question creation
+    $flash = $request->session()->get('status');
+    return view ('questions.answers', compact('question', 'answers', 'labelText', 'flash'));
   }
 
-  public function store() {
+  public function store(Request $request) {
     $validated = $this->validateQuestion();
     Question::create($validated);
+    $request->session()->flash('status', 'Your question has been saved!');
     return redirect(route('questions.index'));
+
+  }
+
+  public function answer(Request $request) {
+    $validated = $this->validateAnswer();
+    $newAnswer = Answer::create($validated);
+    $request->session()->flash('status', 'You answer has been saved!');
+    return redirect($newAnswer -> path());
 
   }
 }
