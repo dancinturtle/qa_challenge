@@ -14,7 +14,7 @@
       id="question"
       name="question"
       aria-describedby="questionHelp"
-      placeholder="Is yeast vegan?"
+      placeholder="{{$placeholder}}"
       value="{{old('question')}}"
     >
     <small
