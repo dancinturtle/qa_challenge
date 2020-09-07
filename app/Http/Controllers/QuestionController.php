@@ -7,20 +7,7 @@ use App\Question;
 
 class QuestionController extends Controller
 {
-  protected function validateQuestion() {
-    return request()->validate([
-      'question' => ['required', 'min:5', 'regex:/^.*\?$/']],
-      ['question.regex' => 'Questions must end with a question mark']
-    );
-  }
-
-  public function index() {
-    $questionCollection = Question::withCount(['answers'])->get();
-    $questions = $questionCollection->sortByDesc('created_at');
-    return view('questions.index', compact('questions'));
-  }
-
-  public function create() {
+  protected function randomPlaceholder() {
     $placeholders = array(
       "How can anyone milk an almond?",
       "If vegans love plants so much, why do you eat them?",
@@ -38,7 +25,25 @@ class QuestionController extends Controller
       "B12, checkmate, amirite?"
     );
     $random = array_rand($placeholders);
-    $placeholder = $placeholders[$random];
+    return $placeholders[$random];
+  }
+
+  protected function validateQuestion() {
+    return request()->validate([
+      'question' => ['required', 'min:5', 'regex:/^.*\?$/']],
+      ['question.regex' => 'Questions must end with a question mark.']
+    );
+  }
+
+  public function index() {
+    // fetch questions and how many answers they each have
+    $questionCollection = Question::withCount(['answers'])->get();
+    $questions = $questionCollection->sortByDesc('created_at');
+    return view('questions.index', compact('questions'));
+  }
+
+  public function create() {
+    $placeholder = $this->randomPlaceholder();
     return view('questions.createQuestion', compact('placeholder'));
   }
 
