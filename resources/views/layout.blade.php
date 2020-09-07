@@ -13,31 +13,43 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">
-            <img src="{{asset('favicon_io/favicon.ico')}}" width="30" height="30" class="d-inline-block align-top" alt="vegan icon" >
-            Vegan QA <span class="sr-only">(current)</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      <img src="{{asset('favicon_io/favicon.ico')}}" width="30" height="30" class="d-inline-block align-top" alt="vegan icon" >
+      Vegan QA
+      @if (Request::is('/'))
+        <span class="sr-only">(current)</span>
+      @endif
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {{Request::is('questions') ? 'active' : '' }} ">
-                    <a class="nav-link" href="/questions">View questions</a>
-                </li>
-                <li class="nav-item {{Request::is('questions/create') ? 'active' : '' }} ">
-                    <a class="nav-link" href="{{route('questions.create')}}">Ask a question</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-        <h1 class="mt-3">@yield ('header')</h1>
-        @yield ('content')
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {{Request::is('questions') ? 'active' : '' }}">
+          <a class="nav-link" href="/questions">
+            View questions
+            @if (Request::is('questions'))
+              <span class="sr-only">(current)</span>
+            @endif
+          </a>
+        </li>
+        <li class="nav-item {{Request::is('questions/create') ? 'active' : '' }}">
+          <a class="nav-link" href="{{route('questions.create')}}">
+            Ask a question
+            @if (Request::is('questions/create'))
+              <span class="sr-only">(current)</span>
+            @endif
+          </a>
+        </li>
+      </ul>
     </div>
+  </nav>
+  <div class="container">
+    <h1 class="mt-3">@yield ('header')</h1>
+    @yield ('content')
+  </div>
 </body>
 
 </html>

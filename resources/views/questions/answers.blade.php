@@ -1,7 +1,14 @@
 @extends ('layout')
 @section ('header', 'Answers to: ' . $question->question)
 @section ('content')
-  <form action="{{route('answers.store')}}" method="POST">
+
+
+  @if($flash)
+    <div class="alert alert-success" role="alert">
+      {{$flash}}
+    </div>
+  @endif
+  <form action="{{route('answers.store', $question)}}" method="POST">
     <div class="form-group">
       @csrf
       <label for="answer">{{$labelText}}</label>

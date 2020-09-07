@@ -3,6 +3,12 @@
 @section ('content')
   <h5>Click a question to view the answers given, or submit your own!</h5>
 
+  @if($flash)
+    <div class="alert alert-success" role="alert">
+      {{$flash}}
+    </div>
+  @endif
+
   <table class="table table-dark">
     <thead>
       <tr>
