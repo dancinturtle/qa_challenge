@@ -1,13 +1,35 @@
 @extends ('layout')
 @section ('header', 'Answers to: ' . $question->question)
 @section ('content')
-  <form>
+  <form action="{{route('answers.store')}}" method="POST">
     <div class="form-group">
+      @csrf
       <label for="answer">{{$labelText}}</label>
-      <input type="text" class="form-control" id="answer" aria-describedby="questionHelp">
-      <small id="answerHelp" class="form-text text-muted">5 character minimum</small>
+      <input
+        type="text"
+        class="form-control
+          {{$errors->has('answer') ? 'is-invalid' : ''}}
+        "
+        name="answer"
+        id="answer"
+        aria-describedby="answerHelp"
+        value="{{old('answer')}}"
+      >
+      <small
+        id="answerHelp"
+        class="form-text
+          {{$errors->has('answer') ? 'text-danger': 'text-muted'}}
+        "
+      >
+        @if($errors->has('answer'))
+          {{$errors->first('answer')}}
+        @else
+          5 character minimum.
+        @endif
+      </small>
     </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="hidden" value="{{$question->id}}" name="question_id">
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   @if(count($answers) > 0)
     <table class="table table-dark mt-5">
