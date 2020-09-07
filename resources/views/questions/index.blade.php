@@ -1,14 +1,14 @@
 @extends ('layout')
 @section ('header', 'Questions asked so far')
 @section ('content')
-  <h5>Click a question to view the answers given, or submit your own!</h5>
+  <h5>{!!$headerText!!}</h5>
 
   @if($flash)
     <div class="alert alert-success" role="alert">
       {{$flash}}
     </div>
   @endif
-
+  @if(count($questions) > 0)
   <table class="table table-dark">
     <thead>
       <tr>
@@ -27,4 +27,5 @@
       @endforeach
     </tbody>
   </table>
+  @endif
 @endsection
