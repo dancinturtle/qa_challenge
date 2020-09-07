@@ -21,8 +21,8 @@ Route::get('/questions', 'QuestionController@index')->name('questions.index');
 
 Route::get('/questions/create', 'QuestionController@create')->name('questions.create');
 
-Route::get('/questions/{question}/answers', 'QuestionController@show')->name('questions.show');
+Route::get('/questions/{question}', 'QuestionController@show')->name('questions.show');
 
 Route::post('/questions', 'QuestionController@store')->name('questions.store');
 
-Route::post('/answers', 'AnswerController@store')->name('answers.store');
+Route::post('/questions/{question}/answers', 'QuestionController@answer')->name('answers.store');
